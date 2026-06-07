@@ -13,4 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Routes will be added in Phase 5 (Steps 9–15)
+use App\Http\Controllers\MediaController;
+
+Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
+    Route::apiResource('media', MediaController::class)->only(['index', 'store', 'destroy']);
+});
