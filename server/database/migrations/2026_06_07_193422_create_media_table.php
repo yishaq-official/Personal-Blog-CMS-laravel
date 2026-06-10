@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('size');
             $table->string('path');
             $table->string('url');
+            $table->enum('status', ['processing', 'ready', 'failed'])->default('processing');
             $table->timestamps();
         });
     }

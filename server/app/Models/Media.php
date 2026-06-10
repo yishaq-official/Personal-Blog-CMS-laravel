@@ -14,6 +14,7 @@ class Media extends Model
         'size',
         'path',
         'url',
+        'status',
     ];
 
     public function user()

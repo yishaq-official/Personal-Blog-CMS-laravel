@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 use App\Http\Controllers\MediaController;
+use App\Http\Controllers\PublicPostController;
+
+// Public cached routes
+Route::get('/posts', [PublicPostController::class, 'index']);
+Route::get('/posts/{slug}', [PublicPostController::class, 'show']);
 
 Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
     Route::apiResource('media', MediaController::class)->only(['index', 'store', 'destroy']);

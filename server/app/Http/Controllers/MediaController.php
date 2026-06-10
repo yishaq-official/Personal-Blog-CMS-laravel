@@ -25,35 +25,29 @@ class MediaController extends Controller
         ]);
 
         $file = $request->file('file');
-        $originalName = $file->getClientOriginalName();
-        $filename = uniqid() . '.webp';
-        $path = 'media/' . $filename;
+        
+        // Save to a temporary location
+        $tempPath = $file->store('tmp');
 
-        // Process image
-        $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
-        $image = $manager->read($file->getRealPath());
-        
-        // Scale down if width is greater than 1920px
-        $image->scaleDown(width: 1920);
-        
-        // Convert to webp with 80% quality
-        $encoded = $image->toWebp(80);
-        
-        // Store on disk
-        \Illuminate\Support\Facades\Storage::disk('public')->put($path, $encoded->toString());
-
-        // Create DB record
+        // Create DB record with status 'processing'
         $media = \App\Models\Media::create([
             'user_id' => $request->user() ? $request->user()->id : 1, // Fallback to 1 if no auth in testing
-            'filename' => $filename,
-            'original_name' => $originalName,
-            'mime_type' => 'image/webp',
-            'size' => strlen($encoded->toString()),
-            'path' => $path,
-            'url' => \Illuminate\Support\Facades\Storage::url($path),
+            'filename' => 'processing',
+            'original_name' => $file->getClientOriginalName(),
+            'mime_type' => 'processing',
+            'size' => 0,
+            'path' => 'processing',
+            'url' => 'processing',
+            'status' => 'processing',
         ]);
 
-        return response()->json($media, 201);
+        // Dispatch background job
+        \App\Jobs\ProcessImageUpload::dispatch($media, $tempPath);
+
+        return response()->json([
+            'message' => 'Image upload accepted and is processing in the background.',
+            'data' => $media
+        ], 202);
     }
 
     /**
