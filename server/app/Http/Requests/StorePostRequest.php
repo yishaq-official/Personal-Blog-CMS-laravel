@@ -12,18 +12,22 @@ class StorePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|string|max:255',
+            'excerpt' => 'nullable|string',
+            'content' => 'required|string',
+            'category_id' => 'nullable|exists:categories,id',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
+            'cover_image' => 'nullable|string',
+            'status' => 'required|in:draft,published,archived',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
         ];
     }
 }
