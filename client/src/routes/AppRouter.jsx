@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom
 import { useAuth } from '../context/AuthContext';
 import AdminLayout from '../components/layout/AdminLayout';
 import PublicLayout from '../components/layout/PublicLayout';
+import Login from '../pages/auth/Login';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -26,7 +27,7 @@ const AppRouter = () => {
         </Route>
         
         {/* Auth Route */}
-        <Route path="/admin/login" element={<div className="p-8">Login Page</div>} />
+        <Route path="/admin/login" element={<Login />} />
         
         {/* Admin Protected Routes */}
         <Route path="/admin" element={
