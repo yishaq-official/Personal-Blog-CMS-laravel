@@ -1,60 +1,83 @@
 import React from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import { Search, Github, Twitter } from 'lucide-react';
 
 const PublicLayout = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-[#f8fafc] text-slate-900 font-sans">
+    <div className="min-h-screen flex flex-col font-sans bg-[var(--bg-light)] text-[var(--text-primary)]">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-lg shadow-sm">
+        <div className="container mx-auto px-4 h-16 flex items-center justify-between max-w-6xl">
           <div className="flex items-center gap-8">
-            <NavLink to="/" className="text-xl font-bold tracking-tight text-indigo-600 flex items-center gap-2 group">
-              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold shadow-md group-hover:bg-indigo-700 transition-colors">B</div>
-              <span className="hidden sm:block">Blog</span>
-            </NavLink>
-            
-            <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
-              <NavLink to="/" className={({isActive}) => isActive ? 'text-indigo-600' : 'hover:text-slate-900 transition-colors'}>Home</NavLink>
-              <NavLink to="/category/technology" className="hover:text-slate-900 transition-colors">Technology</NavLink>
-              <NavLink to="/category/lifestyle" className="hover:text-slate-900 transition-colors">Lifestyle</NavLink>
+            <Link to="/" className="text-2xl font-bold tracking-tighter hover:opacity-80 transition-opacity">
+              Blog.
+            </Link>
+            <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
+              <Link to="/" className="hover:text-[var(--accent)] transition-colors">Home</Link>
+              <Link to="/category/technology" className="hover:text-[var(--accent)] transition-colors">Technology</Link>
+              <Link to="/category/lifestyle" className="hover:text-[var(--accent)] transition-colors">Lifestyle</Link>
             </nav>
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="hidden sm:flex relative items-center">
-              <Search size={16} className="absolute left-3 text-slate-400" />
+            <div className="relative hidden sm:block">
+              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input 
                 type="text" 
-                placeholder="Search posts..." 
-                className="pl-9 pr-4 py-2 bg-slate-100 border border-transparent focus:bg-white focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100 rounded-full text-sm w-48 transition-all outline-none"
+                placeholder="Search articles..." 
+                className="pl-9 pr-4 py-1.5 bg-gray-100 border-transparent rounded-full text-sm focus:bg-white focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent-glow)] transition-all outline-none"
               />
             </div>
-            
-            {/* Login button for demo */}
-            <NavLink to="/admin/login" className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
+            <Link to="/admin/login" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
               Sign In
-            </NavLink>
+            </Link>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 w-full max-w-6xl mx-auto px-4 py-8 md:py-12">
+      <main className="flex-1 flex flex-col container mx-auto px-4 py-8 max-w-6xl animate-fade-in">
         <Outlet />
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-slate-200 py-10 mt-auto">
-        <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-2 opacity-80">
-            <div className="w-6 h-6 rounded bg-slate-800 flex items-center justify-center text-white font-bold text-xs">B</div>
-            <span className="font-medium text-slate-800 text-sm">&copy; {new Date().getFullYear()} Personal Blog CMS</span>
+      <footer className="bg-white border-t border-gray-200 mt-auto">
+        <div className="container mx-auto px-4 py-12 max-w-6xl">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="col-span-1 md:col-span-2">
+              <Link to="/" className="text-xl font-bold tracking-tighter mb-4 inline-block">
+                Blog.
+              </Link>
+              <p className="text-gray-500 text-sm max-w-sm mb-6">
+                A modern personal blog CMS built with React, Vite, and Laravel. Sharing thoughts, tutorials, and life experiences.
+              </p>
+              <div className="flex items-center gap-4">
+                <a href="#" className="text-gray-400 hover:text-gray-900 transition-colors"><Twitter size={20} /></a>
+                <a href="#" className="text-gray-400 hover:text-gray-900 transition-colors"><Github size={20} /></a>
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4 text-gray-900">Categories</h4>
+              <ul className="space-y-2 text-sm text-gray-500">
+                <li><Link to="/category/technology" className="hover:text-[var(--accent)] transition-colors">Technology</Link></li>
+                <li><Link to="/category/lifestyle" className="hover:text-[var(--accent)] transition-colors">Lifestyle</Link></li>
+                <li><Link to="/category/coding" className="hover:text-[var(--accent)] transition-colors">Coding</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-4 text-gray-900">Legal</h4>
+              <ul className="space-y-2 text-sm text-gray-500">
+                <li><a href="#" className="hover:text-[var(--accent)] transition-colors">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-[var(--accent)] transition-colors">Terms of Service</a></li>
+              </ul>
+            </div>
           </div>
           
-          <div className="flex items-center gap-4 text-slate-400">
-            <a href="#" className="hover:text-slate-900 transition-colors"><Twitter size={20} /></a>
-            <a href="#" className="hover:text-slate-900 transition-colors"><Github size={20} /></a>
+          <div className="border-t border-gray-100 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between text-sm text-gray-500">
+            <p>&copy; {new Date().getFullYear()} Personal Blog CMS. All rights reserved.</p>
+            <p>Built with <span className="text-red-500">♥</span></p>
           </div>
         </div>
       </footer>
